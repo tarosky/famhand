@@ -1,0 +1,20 @@
+{
+  "name": "farmhand",
+  "version": "1.0.0",
+  "description": "A node script to keep Github repo fresh.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node"
+  ],
+  "engines": {
+    "node": ">= 18.0.0"
+  },
+  "author": "Tarosky INC",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^19.0.7"
+  }
+}
