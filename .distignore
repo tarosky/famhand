@@ -7,13 +7,10 @@
 .gitignore
 .node-version
 .stylelintrc.json
-composer.lock
+babel.config.js
 package-lock.json
-phpcs.ruleset.xml
-phpunit.xml.dist
 README.md
 webpack.config.js
-wordpress
 bin
 tests
 package-lock.json

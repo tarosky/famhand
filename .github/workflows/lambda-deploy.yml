@@ -45,7 +45,7 @@ jobs:
           node-version: '18'
 
       - name: Create Package
-        run: npm install --production
+        run: npm install --omit=dev
 
       - name: Clean Unwanted files
         run: bash bin/clean.sh

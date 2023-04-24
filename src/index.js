@@ -2,11 +2,12 @@
  * Entry file for node scripts
  */
 
-const fs = require('fs');
-const { homedir } = require('os');
+import fs from 'fs';
+import { homedir } from 'os';
 
 const request = require("./request");
-const parser = require("./parser");
+import {parseReadme, wpVersionFresh, fermentationDays } from "./parser/index.js";
+import { getRepoFile, getRepos, latestWpVersion } from "./request/index.js";
 
 /**
  * Try to get token.
@@ -39,17 +40,16 @@ const tryToken = () => {
  * @param {string}  token       Token.
  * @returns {Promise<Array<{tested_up_to: null, requires_php: null, pushed_at, name, fermentation_days, id, readme: boolean, fresh: boolean, requires_at_least: null}>>}
  */
-const wpRepos = ( owner, topic, isOrganizer = true, token = '' ) => {
+export default function wpRepos( owner, topic, isOrganizer = true, token = '' ) {
     if ( '' === token ) {
         token = tryToken();
     }
     // Setup token.
-    request.setToken( token );
+    setToken( token );
     // Check newest WP Version.
-    return request.latestWpVersion().then( latestWp =>{
+    return latestWpVersion().then( latestWp =>{
         // Get repos.
-        return request.getRepos( topic, owner, isOrganizer ).then( ( repos ) => {
-            console.log( 'Repos', repos );
+        return getRepos( topic, owner, isOrganizer ).then( ( repos ) => {
             return Promise.allSettled( repos.map( repo => {
                 let result = {
                     id: repo.id,
@@ -60,15 +60,15 @@ const wpRepos = ( owner, topic, isOrganizer = true, token = '' ) => {
                     requires_at_least: null,
                     readme: false,
                     topics: repo.topics,
-                    fermentation_days: parser.fermentationDays( repo.pushed_at ),
+                    fermentation_days: fermentationDays( repo.pushed_at ),
                     fresh: false,
                 };
-                return request.getRepoFile( repo.full_name, 'README.md' ).then( file => {
+                return getRepoFile( repo.full_name, 'README.md' ).then( file => {
                     result.readme = true;
-                    const params = parser.parseReadme( file );
+                    const params = parseReadme( file );
                     result = Object.assign( result, params );
                     if ( result.tested_up_to ) {
-                        result.fresh = parser.wpVersionFresh( result.tested_up_to, latestWp, 3 );
+                        result.fresh = wpVersionFresh( result.tested_up_to, latestWp, 3 );
                     }
                     return Promise.resolve( result );
                 } ).catch( () => {
@@ -80,5 +80,4 @@ const wpRepos = ( owner, topic, isOrganizer = true, token = '' ) => {
             } );
         } );
     } );
-};
-module.exports.wpRepos = wpRepos;
+}

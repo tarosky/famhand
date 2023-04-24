@@ -2,15 +2,20 @@
  * Request to GitHub API
  */
 
-const { Octokit } = require( "@octokit/rest" );
-const fetch = require( 'node-fetch' );
-const { versionCompare } = require( "../parser" );
+import { Octokit } from "@octokit/rest";
+import { versionCompare } from "../parser";
+import fetch from 'node-fetch';
 
 let token;
 
-module.exports.setToken = ( newToken ) => {
+/**
+ * Set token.
+ *
+ * @param {string} newToken
+ */
+export function setToken( newToken ) {
     token = newToken;
-};
+}
 
 let octokitObj = null;
 /**
@@ -35,7 +40,7 @@ const octokit = () => {
  * @param {boolean} isOrganization If true, owner is an organization.
  * @returns {Promise<Array>}
  */
-const getRepos = ( tag, owner, isOrganization = false ) => {
+export function getRepos( tag, owner, isOrganization = false ) {
     let query = 'topic:' + tag;
     if ( isOrganization ) {
         query += '+org:' + owner;
@@ -48,8 +53,7 @@ const getRepos = ( tag, owner, isOrganization = false ) => {
     } ).then( ( res ) => {
         return Promise.resolve( res.data.items );
     } );
-};
-module.exports.getRepos = getRepos;
+}
 
 /**
  * Ger repository's file content.
@@ -58,7 +62,7 @@ module.exports.getRepos = getRepos;
  * @param {string} path      File path.
  * @returns {Promise<string>}
  */
-const getRepoFile = ( repo_name, path ) => {
+export function getRepoFile ( repo_name, path ) {
     return octokit().request( '/repos/' + repo_name + '/contents/' + path, {
         headers: {
             Accept: 'application/vnd.github.raw',
@@ -66,8 +70,7 @@ const getRepoFile = ( repo_name, path ) => {
     } ).then( ( res ) => {
         return Promise.resolve( res.data );
     } );
-};
-module.exports.getRepoFile = getRepoFile;
+}
 
 /**
  * Get latest WordPress version.
@@ -75,7 +78,7 @@ module.exports.getRepoFile = getRepoFile;
  * @see https://codex.wordpress.org/WordPress.org_API#Version_Check
  * @returns {Promise<string>}
  */
-const latestWpVersion = () => {
+export function latestWpVersion() {
     const endpoint = 'https://api.wordpress.org/core/version-check/1.7/';
     return fetch( endpoint ).then( ( res ) => {
         return res.json();
@@ -91,7 +94,6 @@ const latestWpVersion = () => {
         return Promise.resolve( current );
     } );
 }
-module.exports.latestWpVersion = latestWpVersion;
 
 /**
  * Get WordPress version status.
@@ -100,7 +102,7 @@ module.exports.latestWpVersion = latestWpVersion;
  * @param {string} version Version string.
  * @returns {Promise<string>}
  */
-const wpVersionStatus = ( version ) => {
+export function wpVersionStatus( version ){
     const endpoint = 'https://api.wordpress.org/core/stable-check/1.0/';
     version = version.replace( /^(\d+\.\d+)\.0$/, '$1' );
     return fetch( endpoint ).then( ( res ) => {
@@ -109,7 +111,6 @@ const wpVersionStatus = ( version ) => {
         return Promise.resolve( json[version] || 'undefined' );
     } );
 }
-module.exports.wpVersionStatus = wpVersionStatus;
 
 /**
  * Check if WordPress version is insecure.
@@ -117,9 +118,9 @@ module.exports.wpVersionStatus = wpVersionStatus;
  * @param {string} version Version number to check.
  * @returns {Promise<boolean>}
  */
-const isWpVersionSecure = ( version ) => {
+export function isWpVersionSecure ( version ) {
     return wpVersionStatus( version ).then( ( status ) => {
         return Promise.resolve( 'insecure' !== status );
     } );
 }
-module.exports.isWpVersionSecure = isWpVersionSecure;
+

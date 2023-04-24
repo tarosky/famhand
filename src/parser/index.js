@@ -8,7 +8,7 @@
  * @param readme
  * @returns {{tested_up_to: null, requires_php: null, requires_at_least: null}}
  */
-module.exports.parseReadme = ( readme ) => {
+export function parseReadme( readme ) {
 	const params = {
 		requires_at_least: null,
 		requires_php: null,
@@ -39,7 +39,7 @@ module.exports.parseReadme = ( readme ) => {
  * @param {string} date Datetime string.
  * @returns {number}
  */
-module.exports.fermentationDays = ( date ) => {
+export function fermentationDays( date ) {
 	const lastPushed = new Date( date );
 	const now = new Date();
 	const diff = now - lastPushed;
@@ -52,10 +52,10 @@ module.exports.fermentationDays = ( date ) => {
  * @param {string} version Version string.
  * @return {number} Integer like 62
  */
-module.exports.extractMajorWpVersion = ( version ) => {
+export function extractMajorWpVersion( version ) {
 	const digits = version.split( '.');
 	return parseInt( [ digits[0], digits[1] || 0 ].join( '' ), 10 );
-};
+}
 
 /**
  * Is WordPress version fresh?
@@ -64,9 +64,9 @@ module.exports.extractMajorWpVersion = ( version ) => {
  * @param {string} latest     Latest version of WordPress
  * @param {number} acceptable Acceptable version difference. Default is 3.
  */
-module.exports.wpVersionFresh = ( version, latest, acceptable = 3 ) => {
-	const versionNum = this.extractMajorWpVersion( version );
-	const latestNum = this.extractMajorWpVersion( latest );
+export function wpVersionFresh ( version, latest, acceptable = 3 ) {
+	const versionNum = extractMajorWpVersion( version );
+	const latestNum = extractMajorWpVersion( latest );
 	return latestNum - versionNum < acceptable;
 }
 
@@ -77,7 +77,7 @@ module.exports.wpVersionFresh = ( version, latest, acceptable = 3 ) => {
  * @param {string} target  Targeet version.
  * @return {number} -1 is lower than target, 0 is same, 1 is higher than target
  */
-module.exports.versionCompare = ( version, target ) => {
+export function versionCompare( version, target ) {
     const versionNum = version.split( '.' ).map( int => parseInt( int, 10 ) );
     const targetNum  = target.split( '.' ).map( int => parseInt( int, 10 ) );
     for ( const v of [ versionNum, targetNum ] ) {
