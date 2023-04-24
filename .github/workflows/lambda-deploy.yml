@@ -1,0 +1,84 @@
+name: CI/CD for AWS Lambda Layer
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run lint and Unit test.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install NPM Packages
+        run: npm install
+
+      - name: Check JS syntax
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+
+  release:
+    name: Create Release for AWS Labmda
+    needs: [ test ]
+    if: contains(github.ref, 'tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Create Package
+        run: npm install --production
+
+      - name: Clean Unwanted files
+        run: bash bin/clean.sh
+
+      - name: Create Directory.
+        run: |
+          mkdir nodejs
+          cp -r ./src/* ./nodejs/
+          cp -r ./node_modules/ nodejs/node_modules/
+
+      - name: Create Zip
+        run: zip -r nodejs.zip ./nodejs/
+
+      - name: Deploy Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Zip
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: nodejs.zip
+          asset_name: nodejs.zip
+          asset_content_type: application/zip
