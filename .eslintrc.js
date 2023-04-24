@@ -3,7 +3,6 @@ module.exports = {
     env: {
         es6: true,
         node: true,
-        type: "module",
         "jest/globals": true,
     },
     plugins: [
@@ -13,5 +12,7 @@ module.exports = {
         'eslint:recommended',
     ],
     rules: {
-    },
+    },"parserOptions": {
+        sourceType: 'module',
+    }
 };

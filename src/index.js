@@ -5,9 +5,8 @@
 import fs from 'fs';
 import { homedir } from 'os';
 
-const request = require("./request");
-import {parseReadme, wpVersionFresh, fermentationDays } from "./parser/index.js";
-import { getRepoFile, getRepos, latestWpVersion } from "./request/index.js";
+import {parseReadme, wpVersionFresh, fermentationDays } from "./parser";
+import { getRepoFile, getRepos, latestWpVersion, setToken } from "./request";
 
 /**
  * Try to get token.
