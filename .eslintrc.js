@@ -12,7 +12,8 @@ module.exports = {
         'eslint:recommended',
     ],
     rules: {
-    },"parserOptions": {
+    },
+    parserOptions: {
         sourceType: 'module',
     }
 };
