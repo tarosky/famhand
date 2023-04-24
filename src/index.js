@@ -39,7 +39,7 @@ const tryToken = () => {
  * @param {string}  token       Token.
  * @returns {Promise<Array<{tested_up_to: null, requires_php: null, pushed_at, name, fermentation_days, id, readme: boolean, fresh: boolean, requires_at_least: null}>>}
  */
-export default function wpRepos( owner, topic, isOrganizer = true, token = '' ) {
+export function wpRepos( owner, topic, isOrganizer = true, token = '' ) {
     if ( '' === token ) {
         token = tryToken();
     }
