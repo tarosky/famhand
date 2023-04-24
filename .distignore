@@ -7,7 +7,6 @@
 .gitignore
 .node-version
 .stylelintrc.json
-node_modules
 composer.lock
 package-lock.json
 phpcs.ruleset.xml
