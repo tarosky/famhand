@@ -3,7 +3,7 @@
  */
 
 import { Octokit } from "@octokit/rest";
-import { versionCompare } from "../parser/index.js";
+import { versionCompare } from "../parser/index.mjs";
 import fetch from 'node-fetch';
 
 let token;

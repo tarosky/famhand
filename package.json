@@ -2,10 +2,14 @@
     "name": "@tarosky/farmhand",
     "version": "1.0.0",
     "description": "A node script to keep Github repo fresh.",
-    "main": "src/index.js",
+    "main": "src/index.mjs",
     "scripts": {
         "test": "jest",
-        "lint": "eslint src"
+        "lint": "eslint src",
+        "wp-outdated": "./cli.mjs"
+    },
+    "bin": {
+        "wp-outdated": "./cli.mjs"
     },
     "repository": {
         "type": "git",
@@ -25,6 +29,7 @@
     "license": "MIT",
     "dependencies": {
         "@octokit/rest": "^19.0.7",
+        "argv": "^0.0.3",
         "node-fetch": "^3.3.1"
     },
     "devDependencies": {

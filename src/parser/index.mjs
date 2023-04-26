@@ -63,6 +63,7 @@ export function extractMajorWpVersion( version ) {
  * @param {string} version    Version to test.
  * @param {string} latest     Latest version of WordPress
  * @param {number} acceptable Acceptable version difference. Default is 3.
+ * @return {boolean}
  */
 export function wpVersionFresh ( version, latest, acceptable = 3 ) {
 	const versionNum = extractMajorWpVersion( version );

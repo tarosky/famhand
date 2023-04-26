@@ -52,7 +52,7 @@ jobs:
           mkdir -p nodejs/node_modules/farmhand
           cp -r ./node_modules/* nodejs/node_modules/
           cp -r ./src/* ./nodejs/node_modules/farmhand/
-          cat package.json | jq '.type="module"' | jq '.main="index.js"' > ./nodejs/node_modules/farmhand/package.json
+          cat package.json | jq '.type="module"' | jq '.main="index.mjs"' > ./nodejs/node_modules/farmhand/package.json
 
       - name: Create Zip
         run: zip -r nodejs.zip ./nodejs/
