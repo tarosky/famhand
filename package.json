@@ -1,11 +1,15 @@
 {
-    "name": "farmhand",
+    "name": "@tarosky/farmhand",
     "version": "1.0.0",
     "description": "A node script to keep Github repo fresh.",
-    "main": "index.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "jest",
         "lint": "eslint src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tarosky/farmhand.git"
     },
     "keywords": [
         "node"
@@ -13,7 +17,10 @@
     "engines": {
         "node": ">= 18"
     },
-    "type": "commonjs",
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
     "author": "Tarosky INC",
     "license": "MIT",
     "dependencies": {
