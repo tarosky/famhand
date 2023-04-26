@@ -93,6 +93,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+
+      - name: Check Account
+        run: npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN_TAROSKY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Package
         run: bash bin/build.sh ${{ github.ref }}
