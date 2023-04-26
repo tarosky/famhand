@@ -20,7 +20,7 @@
     "publishConfig": {
         "access": "public"
     },
-    "type": "module",
+    "type": "commonjs",
     "author": "Tarosky INC",
     "license": "MIT",
     "dependencies": {
