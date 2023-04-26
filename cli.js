@@ -2,8 +2,8 @@
 
 import fs from 'fs';
 import argv from 'argv';
-import { parseReadme, wpVersionFresh } from './src/parser/index.mjs';
-import { latestWpVersion } from "./src/request/index.mjs";
+import { parseReadme, wpVersionFresh } from './src/parser/index.js';
+import { latestWpVersion } from "./src/request/index.js";
 
 argv.option([
     {
