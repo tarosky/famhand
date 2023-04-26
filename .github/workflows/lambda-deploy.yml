@@ -95,13 +95,7 @@ jobs:
           node-version: '18'
           registry-url: https://registry.npmjs.org
           always-auth: true
-
-      - name: Check Account
-        run: npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN_TAROSKY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          scope: '@tarosky'
 
       - name: Build Package
         run: bash bin/build.sh ${{ github.ref }}
@@ -109,4 +103,4 @@ jobs:
       - name: Publish package
         run: npm publish
         env:
-          NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN_TAROSKY }}

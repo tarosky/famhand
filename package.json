@@ -18,8 +18,7 @@
         "node": ">= 18"
     },
     "publishConfig": {
-        "access": "public",
-        "registry": "https://npm.pkg.github.com"
+        "access": "public"
     },
     "type": "commonjs",
     "author": "Tarosky INC",
