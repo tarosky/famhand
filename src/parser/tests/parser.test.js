@@ -1,13 +1,20 @@
 /**
  * Unit test for file parser.
  */
-
-import { parseReadme, fermentationDays, extractMajorWpVersion, wpVersionFresh, versionCompare } from '../index';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { parseReadme, fermentationDays, extractMajorWpVersion, wpVersionFresh, versionCompare } from '../index.js';
 import { readFileSync } from 'fs';
+
+
+// see: https://teno-hira.com/media/?p=1615
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe( 'Test Parsing Utilities:', () => {
     test( 'Extract README.md info', () => {
         // Get readme.
+
         const readme = readFileSync( __dirname + '/README.md' ).toString();
         const params = parseReadme( readme );
         expect( params.requires_at_least ).toBe( '5.9' );

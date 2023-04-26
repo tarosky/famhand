@@ -4,12 +4,12 @@
     "description": "A node script to keep Github repo fresh.",
     "main": "src/index.mjs",
     "scripts": {
-        "test": "jest",
+        "test": "export NODE_OPTIONS=--experimental-vm-modules && jest",
         "lint": "eslint src",
-        "wp-outdated": "./cli.mjs"
+        "wp-outdated": "./cli.js"
     },
     "bin": {
-        "wp-outdated": "./cli.mjs"
+        "wp-outdated": "./cli.js"
     },
     "repository": {
         "type": "git",
@@ -24,7 +24,7 @@
     "publishConfig": {
         "access": "public"
     },
-    "type": "commonjs",
+    "type": "module",
     "author": "Tarosky INC",
     "license": "MIT",
     "dependencies": {

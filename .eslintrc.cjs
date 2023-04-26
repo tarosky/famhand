@@ -15,5 +15,9 @@ module.exports = {
     },
     parserOptions: {
         sourceType: 'module',
-    }
+    },
+    ignorePatterns: [
+        "**/*.test.js"
+    ],
+
 };
