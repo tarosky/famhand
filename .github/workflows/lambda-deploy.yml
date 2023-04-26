@@ -83,7 +83,7 @@ jobs:
 
   release:
 
-    name: Create Release for AWS Lambda
+    name: Publish npm package
     needs: [ lambda ]
     runs-on: ubuntu-latest
     steps:
@@ -100,4 +100,4 @@ jobs:
       - name: Publish package
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN_TAROSKY }}
+          NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
