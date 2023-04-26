@@ -9,6 +9,6 @@ VERSION=${1#"$PREFIX"}
 echo "Building Package v${VERSION}..."
 
 # Change version string.
-sed -i.bak 's/"type": "commonjs",/"type": "module",/g' package.json
-sed -i.bak "s/\"version\": .*,$/\"version\": \"${VERSION}\",/g" package.json
-rm package.json.bak
+cat package.json | jq ".version = \"${VERSION}\"" | jq '.type="module"' > package.json.tmp
+rm package.json
+mv package.json.tmp package.json

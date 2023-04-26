@@ -47,17 +47,12 @@ jobs:
       - name: Create Package for AWS lambda
         run: npm install --omit=dev
 
-      - name: Clean Unwanted files
-        run: bash bin/clean.sh
-
-      - name: Create Directory.
+      - name: Create Deploy Directory
         run: |
           mkdir -p nodejs/node_modules/farmhand
           cp -r ./node_modules/* nodejs/node_modules/
           cp -r ./src/* ./nodejs/node_modules/farmhand/
-          cp package.json ./nodejs/node_modules/farmhand/
-          sed -i 's/"type": "commonjs",/"type": "module",/g' ./nodejs/node_modules/farmhand/package.json
-          sed -i 's/"main": "src/index\.js",/"type": "index.js",/g' ./nodejs/node_modules/farmhand/package.json
+          cat package.json | jq '.type="module"' | jq '.main="index.js"' > ./nodejs/node_modules/farmhand/package.json
 
       - name: Create Zip
         run: zip -r nodejs.zip ./nodejs/
