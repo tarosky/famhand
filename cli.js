@@ -27,8 +27,7 @@ try {
         throw new Error( 'NO version specified.' );
     }
 } catch ( e ) {
-    console.error( e );
-    process.exit( 0 );
+    process.stdout.write( e );
 }
 
 // Get current wp version.
@@ -39,9 +38,8 @@ latestWpVersion().then( version => {
         return Promise.reject( 'Version is secure.' );
     }
 } ).then( msg => {
-    console.log( msg );
-    process.exit( 0 );
+    process.stdout.write( msg );
 } ).catch( ( e ) => {
-    console.error( e );
-    process.exit( 0 );
+    process.stdout.write( e );
 } );
+
