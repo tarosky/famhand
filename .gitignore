@@ -1,5 +1,6 @@
 github.token
 *.bak
+/tmp
 
 # Logs
 logs
