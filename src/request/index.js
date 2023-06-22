@@ -3,7 +3,7 @@
  */
 
 import { Octokit } from "@octokit/rest";
-import { versionCompare, wpVersionFresh } from "../parser/index.js";
+import { versionCompare } from "../parser/index.js";
 import fetch from 'node-fetch';
 
 let token;
@@ -72,25 +72,6 @@ export function getRepoFile ( repo_name, path ) {
     } );
 }
 
-export function createUpdateIssue() {
-    return octokit().request( 'POST  /repos/{owner}/{repo}/issues', {
-        owner: 'OWNER',
-        repo: 'REPO',
-        title: 'Found a bug',
-        body: 'I\'m having a problem with this.',
-        assignees: [
-            'octocat'
-        ],
-        milestone: 1,
-        labels: [
-            'bug'
-        ],
-        headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-        }
-    } );
-}
-
 /**
  * Get latest WordPress version.
  *
@@ -145,12 +126,11 @@ export function majorVersionToInt( version ) {
  * @returns {Promise<string[]>}
  */
 export function getVersionsBetween( oldest, latest = 'latest' ) {
-    const versions = {};
     return wpVersions().then( ( versions) => {
         const latestVersions = [];
         const versionStore = {};
         for ( const version in versions ) {
-            if ( ! versions.hasOwnProperty( version ) ) {
+            if ( ! Object.hasOwn( versions, version ) ) {
                 continue;
             }
             const major = majorVersionToInt( version );
@@ -166,7 +146,7 @@ export function getVersionsBetween( oldest, latest = 'latest' ) {
         }
         oldest = majorVersionToInt( oldest );
         for ( const key in versionStore ) {
-            if ( ! versionStore.hasOwnProperty( key ) ) {
+            if ( ! Object.hasOwn( versionStore, key ) ) {
                 continue;
             }
             const major = majorVersionToInt(  versionStore[key] );
