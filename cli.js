@@ -40,6 +40,6 @@ latestWpVersion().then( version => {
 } ).then( msg => {
     process.stdout.write( msg );
 } ).catch( ( e ) => {
-    process.stdout.write( e );
+    process.stderr.write( e );
 } );
 

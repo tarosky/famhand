@@ -117,5 +117,5 @@ getVersionsBetween( oldest, latest ).then( versions => {
 } ).then( wps => {
     console.table( wps );
 } ).catch( e => {
-    process.stdout.write( e );
+    process.stderr.write( e );
 } );
