@@ -72,25 +72,6 @@ export function getRepoFile ( repo_name, path ) {
     } );
 }
 
-export function createUpdateIssue() {
-    return octokit().request( 'POST  /repos/{owner}/{repo}/issues', {
-        owner: 'OWNER',
-        repo: 'REPO',
-        title: 'Found a bug',
-        body: 'I\'m having a problem with this.',
-        assignees: [
-            'octocat'
-        ],
-        milestone: 1,
-        labels: [
-            'bug'
-        ],
-        headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-        }
-    } );
-}
-
 /**
  * Get latest WordPress version.
  *
@@ -115,6 +96,74 @@ export function latestWpVersion() {
 }
 
 /**
+ * Get WordPress versions.
+ *
+ * @returns {Promise<object>}
+ */
+function wpVersions() {
+    const endpoint = 'https://api.wordpress.org/core/stable-check/1.0/';
+    return fetch( endpoint ).then( ( res ) => {
+        return res.json();
+    } );
+}
+
+/**
+ * Convert major version string like "4.6.0" to 46.
+ *
+ * @param {string} version Version number.
+ * @returns {number}
+ */
+export function majorVersionToInt( version ) {
+    const number = version.split( '.' );
+    return number[0] * 10 + number[1] * 1;
+}
+
+/**
+ * Get WordPress versions between oldest and latest.
+ *
+ * @param {string} oldest Version number. e.g. 4.0, 5.6.1
+ * @param {string} latest Same as oldest, but "latest" is also availble.
+ * @returns {Promise<string[]>}
+ */
+export function getVersionsBetween( oldest, latest = 'latest' ) {
+    return wpVersions().then( ( versions) => {
+        const latestVersions = [];
+        const versionStore = {};
+        for ( const version in versions ) {
+            if ( ! Object.hasOwn( versions, version ) ) {
+                continue;
+            }
+            const major = majorVersionToInt( version );
+            if ( ! versionStore[major] ) {
+                versionStore[major] = version;
+            } else {
+                const currentMinor = parseInt( versionStore[major].split( '.' )[2], 10 ) || 0;
+                const newMinor = parseInt( version.split( '.' )[2], 10 );
+                if ( currentMinor < newMinor ) {
+                    versionStore[major] = version;
+                }
+            }
+        }
+        oldest = majorVersionToInt( oldest );
+        for ( const key in versionStore ) {
+            if ( ! Object.hasOwn( versionStore, key ) ) {
+                continue;
+            }
+            const major = majorVersionToInt(  versionStore[key] );
+            if ( major < oldest ) {
+                continue;
+            }
+            if ( 'latest' !== latest && major > majorVersionToInt( latest ) ) {
+                continue;
+            }
+            latestVersions.push( versionStore[key] );
+        }
+        return latestVersions;
+    } );
+}
+
+
+/**
  * Get WordPress version status.
  *
  * @see https://codex.wordpress.org/WordPress.org_API#Version_Stability
@@ -122,11 +171,8 @@ export function latestWpVersion() {
  * @returns {Promise<string>}
  */
 export function wpVersionStatus( version ){
-    const endpoint = 'https://api.wordpress.org/core/stable-check/1.0/';
     version = version.replace( /^(\d+\.\d+)\.0$/, '$1' );
-    return fetch( endpoint ).then( ( res ) => {
-        return res.json();
-    } ).then( ( json ) => {
+    return wpVersions().then( ( json ) => {
         return Promise.resolve( json[version] || 'undefined' );
     } );
 }

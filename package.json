@@ -6,10 +6,12 @@
     "scripts": {
         "test": "export NODE_OPTIONS=--experimental-vm-modules && jest",
         "lint": "eslint src",
-        "wp-outdated": "./cli.js"
+        "wp-outdated": "./cli.js",
+        "wp-str-search": "./cli-string-search.js"
     },
     "bin": {
-        "wp-outdated": "./cli.js"
+        "wp-outdated": "./cli.js",
+        "wp-str-search": "./cli-string-search.js"
     },
     "repository": {
         "type": "git",
@@ -30,6 +32,7 @@
     "dependencies": {
         "@octokit/rest": "^19.0.7",
         "argv": "^0.0.3",
+        "decompress": "^4.2.1",
         "node-fetch": "^3.3.1"
     },
     "devDependencies": {

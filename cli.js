@@ -24,7 +24,7 @@ try {
     readme = fs.readFileSync( file, 'utf-8' ).toString();
     readme = parseReadme( readme );
     if ( ! readme.tested_up_to ) {
-        throw new Error( 'NO version specified.' );
+        throw new Error( 'No version specified.' );
     }
 } catch ( e ) {
     process.stdout.write( e );
@@ -40,6 +40,6 @@ latestWpVersion().then( version => {
 } ).then( msg => {
     process.stdout.write( msg );
 } ).catch( ( e ) => {
-    process.stdout.write( e );
+    process.stderr.write( e );
 } );
 
